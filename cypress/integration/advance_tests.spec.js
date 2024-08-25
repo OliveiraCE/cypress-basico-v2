@@ -32,10 +32,12 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.tick(TIME_FOWARD)
     cy.get('.error').should('be.not.visible')
   })
-  it('Campo telefone tenha somente números', () => {
-    cy.get('#phone')
-      .type('Teste')
-      .should('have.value', '')
+  Cypress._.times(4, () => {
+    it('Campo telefone tenha somente números', () => {
+      cy.get('#phone')
+        .type('Teste')
+        .should('have.value', '')
+    })
   })
   it('Exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
     cy.clock()
