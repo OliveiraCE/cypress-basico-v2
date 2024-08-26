@@ -168,4 +168,43 @@ describe('Central de Atendimento ao Cliente TAT', () => {
       .click()
     cy.contains('Talking About Testing').should('be.visible')
   })
+  it('Exibe e esconde as mensagens de sucesso e erro usando o .invoke()', () => {
+    cy.get('.error')
+      .should('be.not.visible')
+      .invoke('show')
+      .should('be.visible')
+      .and('contain', 'Valide os campos obrigatórios!')
+      .invoke('hide')
+      .should('be.not.visible')
+    cy.get('.success')
+      .should('be.not.visible')
+      .invoke('show')
+      .should('be.visible')
+      .and('contain', 'Mensagem enviada com sucesso.')
+      .invoke('hide')
+      .should('be.not.visible')
+  })
+  it('Preenche a area de texto usando o comando invoke', () => {
+    const longText = Cypress._.repeat('Teste ', 20)
+    cy.get('#open-text-area')
+      .invoke('val', longText)
+      .should('have.value', longText)
+  })
+  it('Faz uma requisição HTTP', () => {
+    cy.request({
+      method: 'GET',
+      url: 'https://cac-tat.s3.eu-central-1.amazonaws.com/index.html'
+    }).should((response) => {
+      const { status, statusText, body } = response
+      expect(status).to.equal(200)
+      expect(statusText).to.equal('OK')
+      expect(body).to.include('CAC TAT')
+    })
+  })
+  it.only('Desafio do Curso', () => {
+    cy.get('#cat')
+      .should('be.not.visible')
+      .invoke('show')
+      .should('be.visible')
+  })
 })
